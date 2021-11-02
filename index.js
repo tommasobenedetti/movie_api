@@ -50,7 +50,7 @@ app.get('/movies', (req, res) => {
 app.use("/public", express.static("public"));
 
 app.get("/documentation.html", (req, res) => {
-  res.sendFile(`movie_api/public/documentation.html`);
+  res.sendFile(`public/documentation.html`);
 });
 
 // Error Handler
