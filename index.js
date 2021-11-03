@@ -47,7 +47,7 @@ app.get('/movies', (req, res) => {
     res.send(movies)
 });
 
-app.use("/Public", express.static("public"));
+app.use("/Public", express.static("Public"));
 
 app.get("/documentation.html", (req, res) => {
     res.sendFile(`${__dirname}/Public/documentation.html`);
