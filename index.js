@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-app.use(morgan('common'));
 const app = express();
+app.use(morgan('common'));
 
 // Create a movie list.
 let movies = [
@@ -47,10 +47,10 @@ app.get('/movies', (req, res) => {
     res.send(movies)
 });
 
-app.use("/public", express.static("public"));
+app.use("/Public", express.static("public"));
 
 app.get("/documentation.html", (req, res) => {
-  res.sendFile(`public/documentation.html`);
+    res.sendFile(`${__dirname}/Public/documentation.html`);
 });
 
 // Error Handler
