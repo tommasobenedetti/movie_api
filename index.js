@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const uuid = require('uuid');
 const app = express();
 app.use(morgan('common'));
 
@@ -7,35 +8,44 @@ app.use(morgan('common'));
 let movies = [
     {
         name: 'Mad Max: Fury Road',
-        released: '2015'
+        year: '2015',
+        genre: 'Fantasy, Action'
     },
     {
         name: 'The pianist',
-        released: '2002'
+        year: '2002',
+        genre: 'Drama'
     },
     {
         name: 'The Big Short',
-        released: '2017'
+        year: '2017',
+        genre: 'Comedy, Drama'
     },
     {
         name: 'No Country For Old Man',
-        released: '2007'
+        year: '2007',
+        genre: 'Action, Drama'
     },
     {
         name: 'Master & Commander',
-        released: '2003'
+        year: '2003',
+        genre: 'Adventure, Action'
     },
     {
         name: 'Kill Bill',
-        released: '2003'
+        year: '2003',
+        genre: 'Action'
+
     },
     {
         name: 'Kill Bill II',
-        released: '2004'
+        year: '2004',
+        genre: 'Action'
     },
     {
         name: 'Birdman',
-        released: '2014'
+        year: '2014',
+        genre: 'Drama, Comedy'
     }
 ]
 
@@ -43,14 +53,84 @@ let movies = [
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix app!');
 });
+// Return all movies
 app.get('/movies', (req, res) => {
-    res.send(movies)
+    res.status(200).json(movies)
 });
 
-app.use("/Public", express.static("Public"));
+app.get('/movies/:title', (req, res) => {
+    let movie = movies.find((movie) => {
+        return movie.title === req.params.title;
+    });
+    if(movie) {
+        res.status(200).json(movie)
+    } else {
+        res.status(400).send('No movie with that title is found')
+    }
+});
 
-app.get("/documentation.html", (req, res) => {
-    res.sendFile(`${__dirname}/Public/documentation.html`);
+app.get('/movies/genre/:genre', (req, res) => {
+    let movieList = []
+    movies.find((movie) => {
+        if(movie.genre === req.params.genre) {
+            movieList.push(movie)
+        }
+    });
+
+    res.json(movieList)
+});
+
+app.get('/movies/year/:year', (req, res) => {
+    let year = movies.find((movie) => {
+        return movie.year.name === req.params.year;
+    });
+    if(year) {
+        res.status(200).json(year)
+    } else {
+        res.status(400).send('No film was released this year')
+    }
+});
+
+app.post('/users', (req, res) => {
+    let user = req.body
+
+    if(user.username) {
+        res.status(200).json(user)
+    } else {
+        res.status(400).send('Valid user info was not passed in')
+    }
+});
+
+app.put('/users/:username', (req, res) => {
+    let username = req.params.username
+    res.status(200).send(`Username has been changed to ${username}`)
+});
+
+
+let favorites = []
+app.post('/users/add/:movieName', (req, res) => {
+    let addMovie = movies.find((movie) => {
+        return movie.title === req.params.movieName;
+    });
+
+    if(addMovie) {
+        favorites.push(req.params.movieName)
+        res.status(200).send(`${req.params.movieName} has been added to your favorites`);
+    } else {
+        res.status(400).send('Cannot find movie with that name');
+    }
+});
+
+app.delete('/users/remove/:movieName', (req, res) => {
+    favorites = favorites.filter((name) => { return name !== req.params.movieName });
+    res.status(200).send(`${req.params.movieName} has been removed from your favorites`);
+});
+
+app.delete('/users/deleteAccount/:id', (req, res) => {
+    res.status(200).send('Your account has been deleted');
+})
+
+app.get('/documentation.html', (req, res) => {
 });
 
 // Error Handler
