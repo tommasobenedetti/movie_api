@@ -2,7 +2,10 @@ const express = require('express');
 const morgan = require('morgan');
 const uuid = require('uuid');
 const app = express();
-app.use(morgan('common'));
+app.use(morgan('common')); //Middelware for logger.
+app.use(express.json()); //Middelware for Json
+app.use('/public', express.static('public'));
+
 
 // Create a movie list.
 let movies = [
@@ -53,28 +56,29 @@ let movies = [
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix app!');
 });
+app.get('/documentation', (req, res) => {
+    res.status(200).sendFile(`${__dirname}/Public/documentation.html`);
+});
+
 // Return all movies
 app.get('/movies', (req, res) => {
     res.status(200).json(movies)
 });
 
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:name', (req, res) => {
     let movie = movies.find((movie) => {
-        return movie.title === req.params.title;
+        return movie.name === req.params.name;
     });
     if(movie) {
         res.status(200).json(movie)
     } else {
-        res.status(400).send('No movie with that title is found')
+        res.status(400).send('No movie with that title was found')
     }
 });
 
 app.get('/movies/genre/:genre', (req, res) => {
-    let movieList = []
-    movies.find((movie) => {
-        if(movie.genre === req.params.genre) {
+    let movieList = movies.filter((movie) => {movie.genre === req.params.genre
             movieList.push(movie)
-        }
     });
 
     res.json(movieList)
@@ -82,7 +86,7 @@ app.get('/movies/genre/:genre', (req, res) => {
 
 app.get('/movies/year/:year', (req, res) => {
     let year = movies.find((movie) => {
-        return movie.year.name === req.params.year;
+      return movie.year === req.params.year;
     });
     if(year) {
         res.status(200).json(year)
@@ -110,7 +114,7 @@ app.put('/users/:username', (req, res) => {
 let favorites = []
 app.post('/users/add/:movieName', (req, res) => {
     let addMovie = movies.find((movie) => {
-        return movie.title === req.params.movieName;
+        return movie.name === req.params.movieName;
     });
 
     if(addMovie) {
@@ -129,9 +133,6 @@ app.delete('/users/remove/:movieName', (req, res) => {
 app.delete('/users/deleteAccount/:id', (req, res) => {
     res.status(200).send('Your account has been deleted');
 })
-
-app.get('/documentation.html', (req, res) => {
-});
 
 // Error Handler
 app.use((err, req, res, next) => {
