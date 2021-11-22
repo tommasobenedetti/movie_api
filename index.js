@@ -21,49 +21,49 @@ app.use('/public', express.static('public'));
 
 
 // Create a movie list.
-let movies = [
-    {
-        name: 'Mad Max: Fury Road',
-        year: '2015',
-        genre: 'Fantasy, Action'
-    },
-    {
-        name: 'The pianist',
-        year: '2002',
-        genre: 'Drama'
-    },
-    {
-        name: 'The Big Short',
-        year: '2017',
-        genre: 'Comedy, Drama'
-    },
-    {
-        name: 'No Country For Old Man',
-        year: '2007',
-        genre: 'Action, Drama'
-    },
-    {
-        name: 'Master & Commander',
-        year: '2003',
-        genre: 'Adventure, Action'
-    },
-    {
-        name: 'Kill Bill',
-        year: '2003',
-        genre: 'Action'
+//let movies = [
+    //{
+      //  name: 'Mad Max: Fury Road',
+      //  year: '2015',
+      //  genre: 'Fantasy, Action'
+  //  },
+  //  {
+    //    name: 'The pianist',
+    //    year: '2002',
+    //    genre: 'Drama'
+  //  },
+  //  {
+      //  name: 'The Big Short',
+      //  year: '2017',
+    //    genre: 'Comedy, Drama'
+    //},
+    //{
+      //  name: 'No Country For Old Man',
+      //  year: '2007',
+      //  genre: 'Action, Drama'
+    //},
+    //{
+    //    name: 'Master & Commander',
+      //  year: '2003',
+      //  genre: 'Adventure, Action'
+    //},
+    //{
+      //  name: 'Kill Bill',
+      //  year: '2003',
+      //  genre: 'Action'
 
-    },
-    {
-        name: 'Kill Bill II',
-        year: '2004',
-        genre: 'Action'
-    },
-    {
-        name: 'Birdman',
-        year: '2014',
-        genre: 'Drama, Comedy'
-    }
-]
+    //},
+    //{
+      //  name: 'Kill Bill II',
+      //  year: '2004',
+      //  genre: 'Action'
+    //},
+    //{
+    //    name: 'Birdman',
+    //    year: '2014',
+    //    genre: 'Drama, Comedy'
+    //}
+//]
 
 // GET requests
 app.get('/', (req, res) => {
