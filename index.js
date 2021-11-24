@@ -19,6 +19,8 @@ app.use(morgan('common')); //Middelware for logger.
 app.use(express.json()); //Middelware for Json
 app.use('/public', express.static('public'));
 
+let auth = require('./auth')(app);
+
 
 // Create a movie list.
 //let movies = [
