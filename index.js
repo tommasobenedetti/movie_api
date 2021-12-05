@@ -18,11 +18,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//adding cors
+//add cors
 const cors = require('cors');
 app.use(cors());
 
-//connects the auth file for log ins to connect to this file
+//connect the auth file for log in to connect to this file
 const passport = require('passport');
 require('./passport');
 require('./auth')(app);
@@ -204,18 +204,18 @@ app.post('/users',
       return res.status(422).json({ errors: errors.array() });
     }
 
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username })
+  let hashedPassword = Users.hashPassword(req.query.Password);
+  Users.findOne({ Username: req.query.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(req.query.Username + 'already exists');
       } else {
         Users
           .create({
-            Username: req.body.Username,
+            Username: req.query.Username,
             Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+            Email: req.query.Email,
+            Birthday: req.query.Birthday
           })
           .then((user) =>{res.status(201).json(user) })
         .catch((error) => {
