@@ -204,7 +204,7 @@ app.post('/users',
       return res.status(422).json({ errors: errors.array() });
     }
 
-  let hashedPassword = Users.hashPassword(req.query.Password);
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.query.Username })
     .then((user) => {
       if (user) {
