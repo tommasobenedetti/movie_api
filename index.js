@@ -1,36 +1,34 @@
+const express = require('express');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
+const bodyParser = require("body-parser");
 const Models = require('./models.js');
-const { check, validationResult } = require('express-validator');
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+// const uuid = require("uuid");
 
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const uuid = require('uuid');
 const app = express();
+
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// middleware
+app.use(morgan('common'));
+app.use(express.static('public'));
 
-//add cors
 const cors = require('cors');
 app.use(cors());
-
-//connect the auth file for log in to connect to this file
+let auth = require('./auth')(app); //This ensures that Express is available in your “auth.js” file as well.
 const passport = require('passport');
 require('./passport');
-require('./auth')(app);
 
-app.use(morgan('common')); //Middelware for logger.
-app.use(express.json()); //Middelware for Json
-app.use('/public', express.static('public'));
-
+const { check, validationResult } = require('express-validator');
 
 // Create a movie list.
 //let movies = [
