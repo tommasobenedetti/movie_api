@@ -23,10 +23,18 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 const cors = require('cors');
-app.use(cors());
-let auth = require('./auth')(app); //This ensures that Express is available in your “auth.js” file as well.
-const passport = require('passport');
-require('./passport');
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://myFlix.netlify.app, https://myFlix.herokuapp.com/'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 const { check, validationResult } = require('express-validator');
 
