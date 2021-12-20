@@ -1,7 +1,9 @@
 I)Topic:
 myFlix
+
 II)User Goals:
 To build the server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.
+
 III)The 5 Ws:
 ● Who—Your immediate users will be frontend developers who’ll work on the client-side for the application based on what’s been documented on the server-side (in this case, this developer is also you!). You should also consider the users of the myFlix application. These will be movie enthusiasts who enjoy reading information about different movies.
 
