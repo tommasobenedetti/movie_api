@@ -23,7 +23,7 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://myflix.herokuapp.com/movies'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://quiet-savannah-08380.herokuapp.com/'];
 
 app.use(cors({
   origin: (origin, callback) => {
