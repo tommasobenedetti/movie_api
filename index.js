@@ -1,31 +1,19 @@
 const express = require('express');
 const passport = require('passport')
+const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const Models = require('./models.js');
-
+const { check, validationResult } = require('express-validator');
 const Movies = Models.Movie;
 const Users = Models.User;
-
-// const uuid = require("uuid");
-
 const app = express();
-
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// middleware
 app.use(morgan('common'));
 app.use(express.static('public'));
-
-const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://quiet-savannah-08380.herokuapp.com/'];
-
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -36,8 +24,15 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+const Auth = require('./auth')
+require('./passport')
+app.use(passport.initialize());
+Auth(app);
 
-const { check, validationResult } = require('express-validator');
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 //READ!!!
 
@@ -51,7 +46,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // Return all movies
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movie) => {
       if (movie) {
