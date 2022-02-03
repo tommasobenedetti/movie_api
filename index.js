@@ -29,7 +29,7 @@ require('./passport')
 app.use(passport.initialize());
 Auth(app);
 
-mongoose.connect(process.env.CONNECTION_URI, {
+mongoose.connect(process.env.CONNECTION_URI || "mongodb://localhost:27017/myFlixDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
