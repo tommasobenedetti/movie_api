@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('common'));
 app.use(express.static('public'));
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://quiet-savannah-08380.herokuapp.com/'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://localhost:4200', 'https://quiet-savannah-08380.herokuapp.com/'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
