@@ -7,6 +7,14 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
+/**
+* @description Middleware logic for checking login credentials for a user. <br>
+* Function is called when a user logs in.<br>
+* First ensures the user exists, then checks that the password is correct.
+* @method loginStrategy
+* @returns {boolean} Returns true if credentials are valid, false otherwise
+*/
+
 passport.use(new LocalStrategy({
   usernameField: 'Username',
   passwordField: 'Password'
@@ -23,10 +31,23 @@ passport.use(new LocalStrategy({
       return callback(null, false, { message: 'Incorrect username or password.' });
     }
 
+    if (!user.validatePassword(password)) {
+      console.log('incorrect password');
+      return callback(null, false, { message: 'Incorrect password.' });
+    }
+
     console.log('finished');
     return callback(null, user);
   });
 }));
+
+/**
+ * @description Middleware logic for checking JWT of a user. <br>
+ * Function is called to check validation before accessing restricted endpoints.<br>
+ * Decodes the JWT and then checks to see if the encoded user exists on the server
+ * @method jwtStrategy
+ * @returns {boolean} Returns true if JWT is valid, false otherwise
+ */
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
@@ -40,3 +61,4 @@ passport.use(new JWTStrategy({
       return callback(error)
     });
 }));
+
