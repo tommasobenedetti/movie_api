@@ -29,7 +29,11 @@ require('./passport')
 app.use(passport.initialize());
 Auth(app);
 
-mongoose.connect(process.env.CONNECTION_URI || "mongodb://localhost:27017/myFlixDB", {
+/* Local database connection:
+mongoose.connect({useNewUrlParser: true, useUnifiedTopology: true});
+*/
+
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -44,6 +48,24 @@ app.get('/', (req, res) => {
 app.get('/documentation', (req, res) => {
   res.status(200).sendFile(`${__dirname}/Public/documentation.html`);
 });
+
+/**
+ * @description Endpoint to get data for all movies.<br>
+ * Requires authorization JWT.
+ * @method GETAllMovies
+ * @param {string} endpoint - /movies
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing data for all movies. Refer to the 
+ *   Genre: { Name: <string>, Description: <string> },    
+ *   Director: { Name: <string>, Bio: <string>, Birth: <string>, Death: <string>},    
+ *   _id: <string>,   
+ *   Title: <string>,   
+ *   Description: <string>,   
+ *   Featured: <boolean>,   
+ *   ImagePath: <string> (uses URL),  
+ * ]}
+ */
 
 // Return all movies
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -61,6 +83,24 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
     });
 });
 
+/**
+ * @description Endpoint to get data about a single movie, by movie title.<br>
+ * Requires authorization JWT.
+ * @method GETOneMovie
+ * @param {string} endpoint - /movies/:Title
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing data for one movie. 
+ * {
+ *   Genre: { Name: <string>, Description: <string> },  
+ *   Director: { Name: <string>, Bio: <string>, Birth: <string>, Death: <string>},    
+ *   _id: <ObjectId>,    
+ *   Title: <string>,  
+ *   Description: <string>,  
+ *   Featured: <boolean>,  
+ *   ImagePath: <string> (uses URL),  
+ */
+
 //Return movie by title
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.title })
@@ -77,6 +117,16 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
     });
 });
 
+/**
+ * @description Endpoint to get info about a genre<br>
+ * Requires authorization JWT.
+ * @method GETOneGenre
+ * @param {string} endpoint - /genres/:Genre
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing data for one genre. 
+ * { Name: <string>, Description: <string> }
+ */
 
 //Return info about a specific genre
 app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -90,6 +140,17 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
     });
 });
 
+/**
+ * @description Endpoint to get info about a director<br>
+ * Requires authorization JWT.
+ * @method GETOneDirector
+ * @param {string} endpoint - /genre/:name
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing data for one director. 
+ * { Name: <string>, Bio: <string>, Birth: <string> , Death: <string>}
+ */
+
 //Return info about a specific director
 app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ "Director.Name": req.params.name })
@@ -101,6 +162,33 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
       res.status(500).send('Error: ' + err);
     });
 });
+
+/*
+ * @description Endpoint to get data for all users.<br>
+ * Requires authorization JWT.
+ * @method GETAllUsers
+ * @param {string} endpoint - /users
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing data for all users. 
+ * {[  _id: <string>,   
+ *     Username: <string>,   
+ *     Password: <string> (hashed),   
+ *     Email: <string>,  
+ *     Birthday: <string>  
+ *     Watchlist: [<string>]  
+ * ]}  
+* app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+*  Users.find()
+*    .then((users) => {
+*      res.status(201).json(users);
+*    })
+*    .catch((err) => {
+*      console.error(err);
+*      res.status(500).send('Error: ' + err);
+*    });
+* });
+*/
 
 //Return all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -119,7 +207,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 });
 
 // Return a user by username
-app.put('/users/:UserName', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users/:UserName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ UserName: req.params.UserName })
     .then((user) => {
       res.json(user);
@@ -188,6 +276,23 @@ app.post('/users',
   });
 
 //CREATE!!!
+
+/**
+ * @description Endpoint to add a movie to a user's list of favorite movies by id<br>
+ * Requires authorization JWT.
+ * @method POSTAddFavoriteMovie
+ * @param {string} endpoint - /users/:ID/:movieID
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing updated user data. 
+ * { _id: <string>,   
+ *   Username: <string>,   
+ *   Password: <string> (hashed),   
+ *   Email: <string>,  
+ *   Birthday: <string>  
+ *   Favorite: [<string>]  
+ * }  
+ */
 
 //adds a favorite movie to a specific user's profile
 app.post('/users/:UserName/:movieId', async (req, res) => {
