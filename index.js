@@ -295,7 +295,7 @@ app.post('/users',
  */
 
 //adds a favorite movie to a specific user's profile
-app.post('/users/:name/:movieId', async (req, res) => {
+app.post('/users/:Username/:movieId', async (req, res) => {
 
   Users.findOneAndUpdate(
     { Username: req.params.Username },
@@ -327,9 +327,9 @@ app.delete('/users/:id/unregister', (req, res) => {
   Users.findOneAndRemove({ _id: req.params.id })
     .then((user) => {
       if (!user) {
-        res.status(404).send(req.params.user_name + ' was not found');
+        res.status(404).send(req.params.id + ' was not found');
       } else {
-        res.status(200).send(req.params.user_name + ' was deleted.');
+        res.status(200).send(req.params.id + ' was deleted.');
       }
     })
     .catch((err) => {
