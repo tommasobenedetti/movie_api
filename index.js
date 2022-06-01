@@ -87,7 +87,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
  * @description Endpoint to get data about a single movie, by movie title.<br>
  * Requires authorization JWT.
  * @method GETOneMovie
- * @param {string} endpoint - /movies/:Title
+ * @param {string} endpoint - /movies/:title
  * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
  * { "Authorization" : "Bearer <jwt>"}
  * @returns {object} - JSON object containing data for one movie. 
@@ -121,7 +121,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
  * @description Endpoint to get info about a genre<br>
  * Requires authorization JWT.
  * @method GETOneGenre
- * @param {string} endpoint - /genres/:Genre
+ * @param {string} endpoint - /movies/genre/:name
  * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
  * { "Authorization" : "Bearer <jwt>"}
  * @returns {object} - JSON object containing data for one genre. 
@@ -144,7 +144,7 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
  * @description Endpoint to get info about a director<br>
  * Requires authorization JWT.
  * @method GETOneDirector
- * @param {string} endpoint - /genre/:name
+ * @param {string} endpoint - /movies/genre/:name
  * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
  * { "Authorization" : "Bearer <jwt>"}
  * @returns {object} - JSON object containing data for one director. 
@@ -207,8 +207,8 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 });
 
 // Return a user by username
-app.get('/users/:UserName', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ UserName: req.params.UserName })
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
     })
@@ -295,10 +295,10 @@ app.post('/users',
  */
 
 //adds a favorite movie to a specific user's profile
-app.post('/users/:UserName/:movieId', async (req, res) => {
+app.post('/users/:name/:movieId', async (req, res) => {
 
   Users.findOneAndUpdate(
-    { UserName: req.params.UserName },
+    { Username: req.params.Username },
     { $addToSet: { FavoriteMovies: req.params.movieId } },
     { new: true }
   ).then(updatedDocument => {
@@ -309,6 +309,16 @@ app.post('/users/:UserName/:movieId', async (req, res) => {
     }
   })
 });
+
+/**
+ * @description Endpoint to delete a user's account by username<br>
+ * Requires authorization JWT.
+ * @method DELETEUserAccount
+ * @param {string} endpoint - /users/:id/unregister
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {string} - A string containing the message: "<Username> was deleted"
+ */
 
 //DELETE!!!
 
@@ -328,9 +338,28 @@ app.delete('/users/:id/unregister', (req, res) => {
     });
 });
 
+/**
+ * @description Endpoint to remove a movie from Watchlist by id <br>
+ * Requires authorization JWT.
+ * @method DELETERemoveFavoriteMovie
+ * @param {string} endpoint - /users/:id/FavoriteMovies/:deleteFavorite
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing updated user data. 
+ * { _id: <string>,   
+ *   Username: <string>,   
+ *   Password: <string> (hashed),   
+ *   Email: <string>,  
+ *   Birthday: <string>  
+ *   Watchlist: [<string>]  
+ * }  
+ */
+
+//DELETE
+
 // Remove a movie from the user's favorites list
 app.delete('/users/:id/FavoriteMovies/:deleteFavorite', (req, res) => {
-  Users.findOneAndUpdate({ UserName: req.params.id }, {
+  Users.findOneAndUpdate({ Username: req.params.id }, {
     $pull: { FavoriteMovies: req.params.deleteFavorite }
   },
     { new: true }, // This line makes sure that the updated document is returned
