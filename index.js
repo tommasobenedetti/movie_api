@@ -294,6 +294,51 @@ app.post('/users',
  * }  
  */
 
+/**
+ * @description Endpoint to update users info<br>
+ * Requires authorization JWT.
+ * @method PUTUpdateUser
+ * @param {string} endpoint - /users/:ID
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @param {req.body} object - The HTTP body must be a JSON object formatted as below (all fields are optional):<br>
+ * {<br>
+ * "Username": "testUser",<br>
+ * "Password": "testPassword",<br>
+ * "Email" : "testUser@gmail.com",<br>
+ * "Birthday" : "1999-09-09"<br>
+ * }
+ * @returns {object} - JSON object containing updated user data. 
+ * { _id: <string>,   
+ *   Username: <string>,   
+ *   Password: <string> (hashed),   
+ *   Email: <string>,  
+ *   Birthday: <string>  
+ *   Watchlist: [<string>]  
+ * }
+ */
+//UPDATE
+//update user info
+app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ id: req.params.id }, {
+    $set:
+    {
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+});
+
 //adds a favorite movie to a specific user's profile
 app.post('/users/:Username/:movieId', async (req, res) => {
 
