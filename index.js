@@ -278,23 +278,6 @@ app.post('/users',
 //CREATE!!!
 
 /**
- * @description Endpoint to add a movie to a user's list of favorite movies by id<br>
- * Requires authorization JWT.
- * @method POSTAddFavoriteMovie
- * @param {string} endpoint - /users/:ID/:movieID
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
- * @returns {object} - JSON object containing updated user data. 
- * { _id: <string>,   
- *   Username: <string>,   
- *   Password: <string> (hashed),   
- *   Email: <string>,  
- *   Birthday: <string>  
- *   Favorite: [<string>]  
- * }  
- */
-
-/**
  * @description Endpoint to update users info<br>
  * Requires authorization JWT.
  * @method PUTUpdateUser
@@ -314,12 +297,12 @@ app.post('/users',
  *   Password: <string> (hashed),   
  *   Email: <string>,  
  *   Birthday: <string>  
- *   Watchlist: [<string>]  
+ *   Favorite movies: [<string>]  
  * }
  */
 //UPDATE
 //update user info
-app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ id: req.params.id }, {
     $set:
     {
@@ -338,6 +321,23 @@ app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, re
       }
     });
 });
+
+/**
+ * @description Endpoint to add a movie to a user's list of favorite movies by id<br>
+ * Requires authorization JWT.
+ * @method POSTAddFavoriteMovie
+ * @param {string} endpoint - /users/:ID/:movieID
+ * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
+ * { "Authorization" : "Bearer <jwt>"}
+ * @returns {object} - JSON object containing updated user data. 
+ * { _id: <string>,   
+ *   Username: <string>,   
+ *   Password: <string> (hashed),   
+ *   Email: <string>,  
+ *   Birthday: <string>  
+ *   Favorite: [<string>]  
+ * }  
+ */
 
 //adds a favorite movie to a specific user's profile
 app.post('/users/:Username/:movieId', async (req, res) => {
