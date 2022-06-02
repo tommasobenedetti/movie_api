@@ -302,8 +302,10 @@ app.post('/users',
  */
 //UPDATE
 //update user info
-app.put('/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ _id: req.params.id }, {
+//UPDATE
+//update user info
+app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ id: req.params.id }, {
     $set:
     {
       Password: req.body.Password,
@@ -321,7 +323,6 @@ app.put('/users/:id', passport.authenticate('jwt', { session: false }), (req, re
       }
     });
 });
-
 /**
  * @description Endpoint to add a movie to a user's list of favorite movies by id<br>
  * Requires authorization JWT.
