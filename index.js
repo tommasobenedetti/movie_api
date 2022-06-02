@@ -305,7 +305,7 @@ app.post('/users',
 //UPDATE
 //update user info
 app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ id: req.params.id }, {
+  Users.findOneAndUpdate({ id: req.params.ID }, {
     $set:
     {
       Password: req.body.Password,
