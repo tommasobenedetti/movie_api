@@ -302,10 +302,11 @@ app.post('/users',
  */
 
 //update user info
-app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.id }, {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
     $set:
     {
+      Username: req.body.Username,
       Password: req.body.Password,
       Email: req.body.Email,
       Birthday: req.body.Birthday
@@ -367,13 +368,13 @@ app.post('/users/:Username/:movieId', async (req, res) => {
 //DELETE!!!
 
 // Remove a user from the db
-app.delete('/users/:id/unregister', (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.id })
+app.delete('/users/:Username', (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
-        res.status(404).send(req.params.id + ' was not found');
+        res.status(400).send(req.params.Username + ' was not found');
       } else {
-        res.status(200).send(req.params.id + ' was deleted.');
+        res.status(200).send(req.params.Username + ' was deleted.');
       }
     })
     .catch((err) => {
