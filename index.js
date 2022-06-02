@@ -300,9 +300,7 @@ app.post('/users',
  *   Favorite movies: [<string>]  
  * }
  */
-//UPDATE
-//update user info
-//UPDATE
+
 //update user info
 app.put('/users/:ID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.id }, {
@@ -370,7 +368,7 @@ app.post('/users/:Username/:movieId', async (req, res) => {
 
 // Remove a user from the db
 app.delete('/users/:id/unregister', (req, res) => {
-  Users.findOneAndRemove({ _id: req.params.id })
+  Users.findOneAndRemove({ Username: req.params.id })
     .then((user) => {
       if (!user) {
         res.status(404).send(req.params.id + ' was not found');
