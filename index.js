@@ -236,7 +236,7 @@ app.post('/users',
   //or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
   [
-    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username is required').isLength({ min: 8 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
@@ -302,12 +302,18 @@ app.post('/users',
  */
 
 //update user info
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
+  check('Username', 'Username is required').isLength({ min: 8 }),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+  let hashPassword = Users.hashPassword(req.body.Password);
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $set:
     {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashPassword,
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
@@ -322,6 +328,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (r
       }
     });
 });
+
 /**
  * @description Endpoint to add a movie to a user's list of favorite movies by id<br>
  * Requires authorization JWT.
@@ -368,8 +375,9 @@ app.post('/users/:Username/:movieId', async (req, res) => {
 //DELETE!!!
 
 // Remove a user from the db
-app.delete('/users/:Username', (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
+
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
@@ -407,7 +415,7 @@ app.delete('/users/:id/FavoriteMovies/:deleteFavorite', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.id }, {
     $pull: { FavoriteMovies: req.params.deleteFavorite }
   },
-    { new: true }, // This line makes sure that the updated document is returned
+    { new: true },
     (err, updatedUser) => {
       if (err) {
         console.error(err);
