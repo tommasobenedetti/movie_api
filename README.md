@@ -58,5 +58,20 @@ reading data from requests and morgan for logging.
 
 ●Javascript ●Node.js ●MongoDB ●Express ●REST API
 
-# To run app
-`npm start`
+# Get Started
+
+● Clone the project ```https://github.com/tommasobenedetti/movie_api```
+● Install all dependencies mentioned in package.json
+● cd to the project diretory
+● Run it by: 
+```bash 
+$node index.js
+```
+
+Note: In order to test the API, please use Postman!
+
+# Deployment and Demo
+
+The API is deployed to Heroku
+### <a href="https://quiet-savannah-08380.herokuapp.com/">LIVE DEMO</a>
+
