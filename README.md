@@ -58,5 +58,5 @@ reading data from requests and morgan for logging.
 
 ●Javascript ●Node.js ●MongoDB ●Express ●REST API
 
-**To run app**
+# To run app
 `npm start`
