@@ -54,8 +54,7 @@ app.get('/documentation', (req, res) => {
  * Requires authorization JWT.
  * @method GETAllMovies
  * @param {string} endpoint - /movies
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for all movies. Refer to the 
  *   Genre: { Name: <string>, Description: <string> },    
  *   Director: { Name: <string>, Bio: <string>, Birth: <string>, Death: <string>},    
@@ -88,8 +87,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
  * Requires authorization JWT.
  * @method GETOneMovie
  * @param {string} endpoint - /movies/:title
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for one movie. 
  * {
  *   Genre: { Name: <string>, Description: <string> },  
@@ -122,8 +120,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
  * Requires authorization JWT.
  * @method GETOneGenre
  * @param {string} endpoint - /movies/genre/:name
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for one genre. 
  * { Name: <string>, Description: <string> }
  */
@@ -145,8 +142,7 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
  * Requires authorization JWT.
  * @method GETOneDirector
  * @param {string} endpoint - /movies/genre/:name
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ *  @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for one director. 
  * { Name: <string>, Bio: <string>, Birth: <string> , Death: <string>}
  */
@@ -168,8 +164,7 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
  * Requires authorization JWT.
  * @method GETAllUsers
  * @param {string} endpoint - /users
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for all users. 
  * {[  _id: <string>,   
  *     Username: <string>,   
@@ -282,8 +277,7 @@ app.post('/users',
  * Requires authorization JWT.
  * @method PUTUpdateUser
  * @param {string} endpoint - /users/:ID
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @param {req.body} object - The HTTP body must be a JSON object formatted as below (all fields are optional):<br>
  * {<br>
  * "Username": "testUser",<br>
@@ -334,8 +328,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
  * Requires authorization JWT.
  * @method POSTAddFavoriteMovie
  * @param {string} endpoint - /users/:ID/:movieID
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing updated user data. 
  * { _id: <string>,   
  *   Username: <string>,   
@@ -367,8 +360,7 @@ app.post('/users/:Username/:movieId', async (req, res) => {
  * Requires authorization JWT.
  * @method DELETEUserAccount
  * @param {string} endpoint - /users/:id/unregister
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {string} - A string containing the message: "<Username> was deleted"
  */
 
@@ -396,8 +388,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
  * Requires authorization JWT.
  * @method DELETERemoveFavoriteMovie
  * @param {string} endpoint - /users/:id/FavoriteMovies/:deleteFavorite
- * @param {req.headers} object - headers object containing the JWT formatted as below:<br>
- * { "Authorization" : "Bearer <jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing updated user data. 
  * { _id: <string>,   
  *   Username: <string>,   

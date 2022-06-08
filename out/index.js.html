@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('common'));
 app.use(express.static('public'));
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://localhost:4200', 'https://quiet-savannah-08380.herokuapp.com/'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://localhost:4200', 'https://quiet-savannah-08380.herokuapp.com/', 'https://tommasobenedetti.github.io/', 'https://tommasobenedetti.github.io/myFlix-Angular-client-2/'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -82,8 +82,7 @@ app.get('/documentation', (req, res) => {
  * Requires authorization JWT.
  * @method GETAllMovies
  * @param {string} endpoint - /movies
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for all movies. Refer to the 
  *   Genre: { Name: &lt;string>, Description: &lt;string> },    
  *   Director: { Name: &lt;string>, Bio: &lt;string>, Birth: &lt;string>, Death: &lt;string>},    
@@ -116,8 +115,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
  * Requires authorization JWT.
  * @method GETOneMovie
  * @param {string} endpoint - /movies/:title
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for one movie. 
  * {
  *   Genre: { Name: &lt;string>, Description: &lt;string> },  
@@ -150,8 +148,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
  * Requires authorization JWT.
  * @method GETOneGenre
  * @param {string} endpoint - /movies/genre/:name
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for one genre. 
  * { Name: &lt;string>, Description: &lt;string> }
  */
@@ -173,8 +170,7 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
  * Requires authorization JWT.
  * @method GETOneDirector
  * @param {string} endpoint - /movies/genre/:name
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ *  @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for one director. 
  * { Name: &lt;string>, Bio: &lt;string>, Birth: &lt;string> , Death: &lt;string>}
  */
@@ -196,8 +192,7 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
  * Requires authorization JWT.
  * @method GETAllUsers
  * @param {string} endpoint - /users
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing data for all users. 
  * {[  _id: &lt;string>,   
  *     Username: &lt;string>,   
@@ -235,8 +230,8 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 });
 
 // Return a user by username
-app.get('/users/:UserName', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ UserName: req.params.UserName })
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
     })
@@ -264,7 +259,7 @@ app.post('/users',
   //or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
   [
-    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username is required').isLength({ min: 8 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
@@ -306,12 +301,62 @@ app.post('/users',
 //CREATE!!!
 
 /**
+ * @description Endpoint to update users info&lt;br>
+ * Requires authorization JWT.
+ * @method PUTUpdateUser
+ * @param {string} endpoint - /users/:ID
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
+ * @param {req.body} object - The HTTP body must be a JSON object formatted as below (all fields are optional):&lt;br>
+ * {&lt;br>
+ * "Username": "testUser",&lt;br>
+ * "Password": "testPassword",&lt;br>
+ * "Email" : "testUser@gmail.com",&lt;br>
+ * "Birthday" : "1999-09-09"&lt;br>
+ * }
+ * @returns {object} - JSON object containing updated user data. 
+ * { _id: &lt;string>,   
+ *   Username: &lt;string>,   
+ *   Password: &lt;string> (hashed),   
+ *   Email: &lt;string>,  
+ *   Birthday: &lt;string>  
+ *   Favorite movies: [&lt;string>]  
+ * }
+ */
+
+//update user info
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
+  check('Username', 'Username is required').isLength({ min: 8 }),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+  let hashPassword = Users.hashPassword(req.body.Password);
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $set:
+    {
+      Username: req.body.Username,
+      Password: hashPassword,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+});
+
+/**
  * @description Endpoint to add a movie to a user's list of favorite movies by id&lt;br>
  * Requires authorization JWT.
  * @method POSTAddFavoriteMovie
  * @param {string} endpoint - /users/:ID/:movieID
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing updated user data. 
  * { _id: &lt;string>,   
  *   Username: &lt;string>,   
@@ -323,10 +368,10 @@ app.post('/users',
  */
 
 //adds a favorite movie to a specific user's profile
-app.post('/users/:UserName/:movieId', async (req, res) => {
+app.post('/users/:Username/:movieId', async (req, res) => {
 
   Users.findOneAndUpdate(
-    { UserName: req.params.UserName },
+    { Username: req.params.Username },
     { $addToSet: { FavoriteMovies: req.params.movieId } },
     { new: true }
   ).then(updatedDocument => {
@@ -343,21 +388,21 @@ app.post('/users/:UserName/:movieId', async (req, res) => {
  * Requires authorization JWT.
  * @method DELETEUserAccount
  * @param {string} endpoint - /users/:id/unregister
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {string} - A string containing the message: "&lt;Username> was deleted"
  */
 
 //DELETE!!!
 
 // Remove a user from the db
-app.delete('/users/:id/unregister', (req, res) => {
-  Users.findOneAndRemove({ _id: req.params.id })
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+
     .then((user) => {
       if (!user) {
-        res.status(404).send(req.params.user_name + ' was not found');
+        res.status(400).send(req.params.Username + ' was not found');
       } else {
-        res.status(200).send(req.params.user_name + ' was deleted.');
+        res.status(200).send(req.params.Username + ' was deleted.');
       }
     })
     .catch((err) => {
@@ -371,8 +416,7 @@ app.delete('/users/:id/unregister', (req, res) => {
  * Requires authorization JWT.
  * @method DELETERemoveFavoriteMovie
  * @param {string} endpoint - /users/:id/FavoriteMovies/:deleteFavorite
- * @param {req.headers} object - headers object containing the JWT formatted as below:&lt;br>
- * { "Authorization" : "Bearer &lt;jwt>"}
+ * @param {function} passAuthJWT - passport function that checks that authorization header is present: {“Authorization”: “Bearer”}
  * @returns {object} - JSON object containing updated user data. 
  * { _id: &lt;string>,   
  *   Username: &lt;string>,   
@@ -387,10 +431,10 @@ app.delete('/users/:id/unregister', (req, res) => {
 
 // Remove a movie from the user's favorites list
 app.delete('/users/:id/FavoriteMovies/:deleteFavorite', (req, res) => {
-  Users.findOneAndUpdate({ UserName: req.params.id }, {
+  Users.findOneAndUpdate({ Username: req.params.id }, {
     $pull: { FavoriteMovies: req.params.deleteFavorite }
   },
-    { new: true }, // This line makes sure that the updated document is returned
+    { new: true },
     (err, updatedUser) => {
       if (err) {
         console.error(err);
@@ -422,13 +466,13 @@ app.listen(port, '0.0.0.0', () => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DELETERemoveFavoriteMovie">DELETERemoveFavoriteMovie</a></li><li><a href="global.html#DELETEUserAccount">DELETEUserAccount</a></li><li><a href="global.html#GETAllMovies">GETAllMovies</a></li><li><a href="global.html#GETOneDirector">GETOneDirector</a></li><li><a href="global.html#GETOneGenre">GETOneGenre</a></li><li><a href="global.html#GETOneMovie">GETOneMovie</a></li><li><a href="global.html#POSTAddFavoriteMovie">POSTAddFavoriteMovie</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DELETERemoveFavoriteMovie">DELETERemoveFavoriteMovie</a></li><li><a href="global.html#DELETEUserAccount">DELETEUserAccount</a></li><li><a href="global.html#GETAllMovies">GETAllMovies</a></li><li><a href="global.html#GETOneDirector">GETOneDirector</a></li><li><a href="global.html#GETOneGenre">GETOneGenre</a></li><li><a href="global.html#GETOneMovie">GETOneMovie</a></li><li><a href="global.html#POSTAddFavoriteMovie">POSTAddFavoriteMovie</a></li><li><a href="global.html#PUTUpdateUser">PUTUpdateUser</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 01 2022 16:05:59 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 08 2022 15:53:32 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

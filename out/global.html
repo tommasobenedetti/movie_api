@@ -104,7 +104,7 @@
     
 
     
-    <h4 class="name" id="DELETERemoveFavoriteMovie"><span class="type-signature"></span>DELETERemoveFavoriteMovie<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="DELETERemoveFavoriteMovie"><span class="type-signature"></span>DELETERemoveFavoriteMovie<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -172,13 +172,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -188,8 +188,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -230,7 +229,7 @@ Requires authorization JWT.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line341">line 341</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line386">line 386</a>
     </li></ul></dd>
     
 
@@ -295,7 +294,7 @@ Requires authorization JWT.
     
 
     
-    <h4 class="name" id="DELETEUserAccount"><span class="type-signature"></span>DELETEUserAccount<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="DELETEUserAccount"><span class="type-signature"></span>DELETEUserAccount<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -363,13 +362,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -379,8 +378,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -421,7 +419,7 @@ Requires authorization JWT.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line313">line 313</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line358">line 358</a>
     </li></ul></dd>
     
 
@@ -479,7 +477,7 @@ Requires authorization JWT.
     
 
     
-    <h4 class="name" id="GETAllMovies"><span class="type-signature"></span>GETAllMovies<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="GETAllMovies"><span class="type-signature"></span>GETAllMovies<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -547,13 +545,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -563,8 +561,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -671,7 +668,7 @@ Requires authorization JWT.
     
 
     
-    <h4 class="name" id="GETOneDirector"><span class="type-signature"></span>GETOneDirector<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="GETOneDirector"><span class="type-signature"></span>GETOneDirector<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -739,13 +736,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -755,8 +752,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -797,7 +793,7 @@ Requires authorization JWT.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line143">line 143</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -856,7 +852,7 @@ Requires authorization JWT.
     
 
     
-    <h4 class="name" id="GETOneGenre"><span class="type-signature"></span>GETOneGenre<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="GETOneGenre"><span class="type-signature"></span>GETOneGenre<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -924,13 +920,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -940,8 +936,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -982,7 +977,7 @@ Requires authorization JWT.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line120">line 120</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -1041,7 +1036,7 @@ Requires authorization JWT.
     
 
     
-    <h4 class="name" id="GETOneMovie"><span class="type-signature"></span>GETOneMovie<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="GETOneMovie"><span class="type-signature"></span>GETOneMovie<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -1109,13 +1104,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -1125,8 +1120,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -1167,7 +1161,7 @@ Requires authorization JWT.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line86">line 86</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -1233,7 +1227,7 @@ Requires authorization JWT.
     
 
     
-    <h4 class="name" id="POSTAddFavoriteMovie"><span class="type-signature"></span>POSTAddFavoriteMovie<span class="signature">(endpoint, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="POSTAddFavoriteMovie"><span class="type-signature"></span>POSTAddFavoriteMovie<span class="signature">(endpoint, passAuthJWT)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -1301,13 +1295,13 @@ Requires authorization JWT.
 
         <tr>
             
-                <td class="name"><code>object</code></td>
+                <td class="name"><code>passAuthJWT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">req.headers</span>
+<span class="param-type">function</span>
 
 
             
@@ -1317,8 +1311,7 @@ Requires authorization JWT.
 
             
 
-            <td class="description last">headers object containing the JWT formatted as below:<br>
-{ "Authorization" : "Bearer <jwt>"}</td>
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
         </tr>
 
     
@@ -1359,7 +1352,7 @@ Requires authorization JWT.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line280">line 280</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -1419,6 +1412,225 @@ Requires authorization JWT.
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="PUTUpdateUser"><span class="type-signature"></span>PUTUpdateUser<span class="signature">(endpoint, passAuthJWT, object)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Endpoint to update users info<br>
+Requires authorization JWT.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>endpoint</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">/users/:ID</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>passAuthJWT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">passport function that checks that authorization header is present: {“Authorization”: “Bearer”}</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">req.body</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The HTTP body must be a JSON object formatted as below (all fields are optional):<br>
+{<br>
+"Username": "testUser",<br>
+"Password": "testPassword",<br>
+"Email" : "testUser@gmail.com",<br>
+"Birthday" : "1999-09-09"<br>
+}</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line275">line 275</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - JSON object containing updated user data. 
+{ _id: <string>,   
+  Username: <string>,   
+  Password: <string> (hashed),   
+  Email: <string>,  
+  Birthday: <string>  
+  Favorite movies: [<string>]  
+}
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -1434,13 +1646,13 @@ Requires authorization JWT.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DELETERemoveFavoriteMovie">DELETERemoveFavoriteMovie</a></li><li><a href="global.html#DELETEUserAccount">DELETEUserAccount</a></li><li><a href="global.html#GETAllMovies">GETAllMovies</a></li><li><a href="global.html#GETOneDirector">GETOneDirector</a></li><li><a href="global.html#GETOneGenre">GETOneGenre</a></li><li><a href="global.html#GETOneMovie">GETOneMovie</a></li><li><a href="global.html#POSTAddFavoriteMovie">POSTAddFavoriteMovie</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DELETERemoveFavoriteMovie">DELETERemoveFavoriteMovie</a></li><li><a href="global.html#DELETEUserAccount">DELETEUserAccount</a></li><li><a href="global.html#GETAllMovies">GETAllMovies</a></li><li><a href="global.html#GETOneDirector">GETOneDirector</a></li><li><a href="global.html#GETOneGenre">GETOneGenre</a></li><li><a href="global.html#GETOneMovie">GETOneMovie</a></li><li><a href="global.html#POSTAddFavoriteMovie">POSTAddFavoriteMovie</a></li><li><a href="global.html#PUTUpdateUser">PUTUpdateUser</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 01 2022 16:05:59 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jun 08 2022 15:53:32 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>
