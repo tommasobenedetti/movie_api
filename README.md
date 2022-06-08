@@ -1,4 +1,4 @@
-# movie-api
+## movie-api
 # Objective
 To build the server-side component of a “movies” web application. The web
 application will provide users with access to information about different
@@ -53,3 +53,10 @@ reading data from requests and morgan for logging.
 ● The API must meet data security regulations.
 ● The API source code must be deployed to a publicly accessible platform like GitHub.
 ● The API must be deployed to Heroku
+
+# Tools Used
+
+●Javascript ●Node.js ●MongoDB ●Express ●REST API
+
+# To run app
+`npm start`
